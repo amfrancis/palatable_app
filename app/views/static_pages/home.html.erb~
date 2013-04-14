@@ -1,2 +1,16 @@
-<h1>StaticPages#home</h1>
-<p>Find me in app/views/static_pages/home.html.erb</p>
+<div class="center hero-unit">
+
+    <h1>Welcome to pal.atab.le</h1>
+
+    <h2>This is the home page for pal.atab.le</h2>
+    
+    <div>
+    <p>This is where the login section will go</p>
+    </div>
+    
+    <div>
+    <%= link_to "Sign up now!", '#', class: "btn btn-large btn-primary" %>
+    </div>
+
+</div>
+

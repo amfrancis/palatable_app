@@ -1,0 +1,5 @@
+<% provide(:title, 'About') %>
+<h1>About</h1>
+<h2>about pal.atab.le</h2>
+<p align="center">pal.atab.le is an application created as part of
+Madison College's Ruby on Rails class.</p>
