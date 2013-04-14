@@ -9,9 +9,8 @@
 #  updated_at :datetime         not null
 #
 
-class Bookmark < ActiveRecord::Base
-  attr_accessible :content, :user_id
+require 'spec_helper'
 
-  belongs_to :user
-
+describe Bookmark do
+  pending "add some examples to (or delete) #{__FILE__}"
 end
