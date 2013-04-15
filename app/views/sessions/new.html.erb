@@ -1,0 +1,28 @@
+<div class="center hero-unit">
+
+    <h1>Welcome to pal.atab.le</h1>
+
+    <h2>This is the home page for pal.atab.le</h2>
+
+    <% provide(:title, "Sign in") %>
+    <h1>Sign in</h1>
+        <div class="row">
+          <div class="span6 offset2">
+            <%= form_for(:session, url: sessions_path) do |f| %>
+
+              <%= f.label :email %>
+              <%= f.text_field :email %>
+
+              <%= f.label :password %>
+              <%= f.password_field :password %>
+
+              <%= f.submit "Sign in", class: "btn btn-large btn-primary" %>
+            <% end %>
+
+            <br />
+
+            <h2>Don't have an account?</h2>
+            <%= link_to "Sign up now!", signup_path, class: "btn btn-large btn-primary" %>  
+          </div>
+        </div>
+</div>
