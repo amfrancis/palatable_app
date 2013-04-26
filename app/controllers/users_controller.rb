@@ -1,13 +1,10 @@
 class UsersController < ApplicationController
+  before_filter :signed_in_user, only: [:edit, :update]
+
   # GET /users
   # GET /users.json
   def index
     @users = User.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @users }
-    end
   end
 
   # GET /users/1
@@ -42,36 +39,29 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
 
-    respond_to do |format|
       if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
-        format.json { render json: @user, status: :created, location: @user }
+        flash[:success] = 'User was successfully created.'
+        sign_in @user
+        redirect_to @user
       else
-        format.html { render action: "new" }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        flash[:error] = 'Error BLAH.'
+        render "new"
       end
-    end
   end
 
   # PUT /users/1
   # PUT /users/1.json
   def update
-    @user = User.find(params[:id])
-
-    respond_to do |format|
-      @user = User.new(params[:user])
-      if @user.save
-          flash[:success] = "Welcome to the Sample App!"
+      @user = User.find(params[:id])
+      if @user.update_attributes(params[:user])
+          flash[:success] = "Profile updated"
+          sign_in @user
           redirect_to @user
       else
-        format.html { render action: "edit" }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+          render 'edit'
       end
-    end
   end
 
-  # DELETE /users/1
-  # DELETE /users/1.json
   def destroy
     @user = User.find(params[:id])
     @user.destroy
@@ -81,4 +71,10 @@ class UsersController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  private
+
+    def signed_in_user
+      redirect_to signin_url, notice: "Please sign in." unless signed_in?
+    end
 end
