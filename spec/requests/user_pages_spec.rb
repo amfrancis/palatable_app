@@ -20,7 +20,7 @@ describe "User pages" do
         it { should have_selector('title', text: 'Sign up') }
         it { should have_content('error') }
       end
-    end
+    end #end "with invalid information"
 
     describe "with valid information" do
       before do
@@ -41,9 +41,10 @@ describe "User pages" do
 
         it { should have_selector('title', text: user.username) }
         it { should have_selector('div.alert.alert-success', text: 'Welcome') }
+        it { should have_link('Sign out', href: signout_path) }
       end
-    end
-end
+    end #end "with valid information"
+  end #end signup tests
 
   describe "profile page" do
     let(:user) { FactoryGirl.create(:user) }
@@ -79,11 +80,14 @@ end
         click_button "Save changes"
       end
 
-      it { should have_selector('title', text: new_name) }
-      it { should have_selector('div.alert.alert-success') }
-      it { should have_link('Sign out', href: signout_path) }
-      specify { user.reload.name.should  == new_name }
-      specify { user.reload.email.should == new_email }
-    end
-  end
-end
+      describe "after saving changes" do
+        it { should have_selector('title', text: new_name) }
+        it { should have_selector('div.alert.alert-success') }
+        it { should have_link('Sign out', href: signout_path) }
+        specify { user.reload.name.should  == new_name }
+        specify { user.reload.email.should == new_email }
+      end
+    end #end "with valid information"
+  end #end edit tests
+
+end #end user pages tests

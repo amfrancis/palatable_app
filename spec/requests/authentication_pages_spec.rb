@@ -9,14 +9,22 @@ describe "Authentication" do
 
     it { should have_selector('h1',    text: 'Sign in') }
     it { should have_selector('title', text: 'Sign in') }
+  end #end signin page tests
+
+  describe "signin" do
+    before {visit signin_path}
 
     describe "with invalid information" do
       before { click_button "Sign in" }
 
       it { should have_selector('title', text: 'Sign in') }
       it { should have_selector('div.alert.alert-error', text: 'Invalid') }
-    end
 
+      describe "after visiting another page" do
+        before { click_link "Home" }
+        it { should_not have_selector('div.alert.alert-error') }
+      end
+    end #end "with invalid information" tests
 
     describe "with valid information" do
       let(:user) { FactoryGirl.create(:user) }
@@ -35,8 +43,8 @@ describe "Authentication" do
         before { click_link "Sign out" }
         it { should have_link('Sign in') }
       end
-    end
-  end
+    end #end "with valid information" tests
+  end #end sign in tests
 
   describe "authorization" do
 
@@ -54,7 +62,8 @@ describe "Authentication" do
           before { put user_path(user) }
           specify { response.should redirect_to(signin_path) }
         end
-      end
-    end
-  end
-end
+      end #end "validate users controller" tests
+    end #end "non-signed-in users" tests
+  end #end "authorization" tests
+
+end #end authentication pages tests
