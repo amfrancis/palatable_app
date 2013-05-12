@@ -40,10 +40,6 @@ describe "Authentication" do
       it { should have_link('Sign out', href: signout_path) }
       it { should_not have_link('Sign in', href: signin_path) }
 
-      describe "followed by signout" do
-        before { click_link "Sign out" }
-        it { should have_link('Sign in') }
-      end
     end #end "with valid information" tests
   end #end sign in tests
 
@@ -80,6 +76,19 @@ describe "Authentication" do
           specify { response.should redirect_to(signin_path) }
         end
       end #end "validate users controller" tests
+
+      describe "in the Bookmarks controller" do
+
+        describe "submitting to the create action" do
+          before { post bookmarks_path }
+          specify { response.should redirect_to(signin_path) }
+        end
+
+        describe "submitting to the destroy action" do
+          before { delete bookmark_path(FactoryGirl.create(:bookmark)) }
+          specify { response.should redirect_to(signin_path) }
+        end
+      end #end "Bookmarks controller" tests
     end #end "non-signed-in users" tests
 
     describe "as wrong user" do

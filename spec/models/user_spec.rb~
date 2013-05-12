@@ -17,8 +17,8 @@ describe User do
 
   before do
       @user = User.new(name: "Example User", email: "user@example.com",
-                       username: "exampleuser", password: "foobar",
-                       password_confirmation: "foobar")
+                       username: "exampleuser", password: "foobarbar",
+                       password_confirmation: "foobarbar")
   end
 
   subject { @user }
@@ -49,7 +49,7 @@ describe User do
   end
 
   describe "when name is too long" do
-    before { @user.name = "a" * 75 }
+    before { @user.name = "a" * 76 }
     it { should_not be_valid }
   end
 
@@ -83,7 +83,7 @@ describe User do
       addresses = %w[user@foo.COM A_US-ER@f.b.org frst.lst@foo.jp a+b@baz.cn]
       addresses.each do |valid_address|
         @user.email = valid_address
-        @user.should be_valid
+        @user.errors[:email].size.should == 0
       end
     end
   end

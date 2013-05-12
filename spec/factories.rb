@@ -5,5 +5,14 @@ FactoryGirl.define do
     username "mhartl"
     password "foobarbar"
     password_confirmation "foobarbar"
+
+    factory :admin do
+      admin true
+    end
+  end
+
+  factory :bookmark do
+    content "loremipsum.com"
+    user
   end
 end

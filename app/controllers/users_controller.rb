@@ -8,6 +8,8 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    @bookmarks = @user.bookmarks
+    @bookmark = current_user.bookmarks.build if signed_in?
   end
 
   def new
@@ -22,7 +24,7 @@ class UsersController < ApplicationController
         redirect_to @user
       else
         flash[:error] = 'error'
-        render "new"
+        render 'new'
       end
   end
 
@@ -52,13 +54,6 @@ class UsersController < ApplicationController
   end
 
   private
-
-    def signed_in_user
-       unless signed_in?
-         store_location
-         redirect_to signin_url, notice: "Please sign in."
-       end
-    end
 
     def correct_user
       @user = User.find(params[:id])

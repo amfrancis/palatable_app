@@ -32,6 +32,7 @@ describe User do
   it { should respond_to(:password_confirmation) }
   it { should respond_to(:remember_token) }
   it { should respond_to(:authenticate) }
+  it { should respond_to(:bookmarks) }
 
   describe "when name is not present" do
     before { @user.name = " " }
@@ -140,6 +141,30 @@ describe User do
     describe "remember token" do
       before { @user.save }
       its(:remember_token) { should_not be_blank }
+    end
+  end
+
+  describe "bookmark associations" do
+
+    before { @user.save }
+    let!(:older_bookmark) do
+      FactoryGirl.create(:bookmark, user: @user, created_at: 1.day.ago)
+    end
+    let!(:newer_bookmark) do
+      FactoryGirl.create(:bookmark, user: @user, created_at: 1.hour.ago)
+    end
+
+     it "should have the right bookmarks in the right order" do
+      @user.bookmarks.should == [newer_bookmark, older_bookmark]
+    end
+
+    it "should destroy associated bookmarks" do
+      bookmarks = @user.bookmarks.dup
+      @user.destroy
+      bookmarks.should_not be_empty
+      bookmarks.each do |bookmarks|
+        Bookmark.find_by_id(bookmarks.id).should be_nil
+      end
     end
   end
 end

@@ -1,7 +1,7 @@
 PalatableApp::Application.routes.draw do
     resources :users
     resources :sessions, only: [:new, :create, :destroy]
-    resources :bookmarks
+    resources :bookmarks, only: [:create, :destroy]
 
     root to: 'sessions#new'
 

@@ -48,11 +48,20 @@ describe "User pages" do
 
   describe "profile page" do
     let(:user) { FactoryGirl.create(:user) }
+    let!(:b1) { FactoryGirl.create(:bookmark, user: user, content: "foo.com") }
+    let!(:b2) { FactoryGirl.create(:bookmark, user: user, content: "bar.com") }
+
     before { visit user_path(user) }
 
-    it { should have_selector('h1',    text: user.username) }
+    it { should have_selector('h2',    text: user.username) }
     it { should have_selector('title', text: user.username) }
-  end
+
+    describe "bookmarks" do
+      it { should have_content(b1.content) }
+      it { should have_content(b2.content) }
+      it { should have_content(user.bookmarks.count) }
+    end #end "bookmarks"
+  end #end "profile page"
 
   describe "edit" do
     let(:user) { FactoryGirl.create(:user) }
@@ -85,7 +94,7 @@ describe "User pages" do
       end
 
       describe "after saving changes" do
-        it { should have_selector('h1', text: new_name) }
+        it { should have_selector('h3', text: new_name) }
         it { should have_selector('div.alert.alert-success') }
         it { should have_link('Sign out', href: signout_path) }
         specify { user.reload.name.should  == new_name }

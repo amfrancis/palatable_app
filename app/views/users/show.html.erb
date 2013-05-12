@@ -1,31 +1,37 @@
 <p id="notice"><%= notice %></p>
 
 <% provide(:title, @user.username) %>
-<h1 align="center"><%= @user.username %></h1>
 
-<div class="row">
-    <aside class="span4">
-        <section>
-            <h1>
-                <%= gravatar_for @user %>
-                <%= @user.name %>
-            </h1>
-        </section>
-    </aside>
+<div class="center hero-unit">
+    <section>
+      <h3>
+        <%= gravatar_for @user %>
+        <%= @user.name %>
+      <h3>
+      <h2>
+        <%= @user.username %>
+      </h2>
+    </section>
 </div>
 
 <br />
+
+<div class="row">
+  <aside class="span4">
+  <%= render 'shared/bookmark_form' %>
+  </aside>
+</div>
+
+<div >
+  <% if @user.bookmarks.any? %>
+    <h3>Bookmarks (<%= @user.bookmarks.count %>)</h3>
+    <ol class="bookmarks">
+      <%= render @bookmarks %>
+    </ol>
+  <% end %>
+</div>
+
 <br />
 
-<p>
-  <b>Name:</b>
-  <%= @user.name %>
-</p>
-
-<p>
-  <b>Email:</b>
-  <%= @user.email %>
-</p>
-
-<%= link_to 'Edit', edit_user_path(@user) %> |
+<%= link_to 'Edit Profile', edit_user_path(@user) %> |
 <%= link_to 'Home', root_path %>
